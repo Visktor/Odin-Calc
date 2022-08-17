@@ -21,5 +21,23 @@ main{
     width: 500px;
     background-color: hsla(0, 0%, 14%, 1);
     border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+    justify-content: space-around;
 }
 
+.upper{
+    height: 20%;
+    background-color: brown;
+} 
+
+.middle{
+    height: 10%;
+}
+
+.lower{
+    background-color: aliceblue;
+    height: 60%;
+}
