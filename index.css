@@ -9,7 +9,7 @@ body {
     width: 100vw;
 }
 
-main{
+main {
     height: 100%;
     width: 100%;
     display: flex;
@@ -17,7 +17,7 @@ main{
     align-items: center;
 }
 
-.Outer{
+.Outer {
     height: 60%;
     width: 500px;
     background-color: hsla(0, 0%, 14%, 1);
@@ -29,22 +29,26 @@ main{
     justify-content: space-around;
 }
 
-.upper{
+.upper {
     height: 20%;
     background-color: brown;
-} 
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-.middle{
+.middle {
     height: 10%;
 }
 
-.lower{
+.lower {
     background-color: aliceblue;
     height: 60%;
     display: flex;
-   }
+}
 
-.nbutton{
+.nbutton {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -55,7 +59,7 @@ main{
     background-color: grey;
 }
 
-.numbers-container{
+.numbers-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     row-gap: 10px;
@@ -64,19 +68,19 @@ main{
     width: 60%;
 }
 
-.operands-container{
+.operands-container {
     display: grid;
     box-sizing: border-box;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     gap: 5px;
-    width:40%;
+    width: 40%;
     height: 100%;
     padding: 10px;
     background-color: brown;
 }
 
-.operands{
+.operands {
     height: 100%;
     width: 100%px;
     border-radius: 5px;
@@ -88,11 +92,40 @@ main{
     border: 2px solid black;
 }
 
-.equal{
-    position:relative;
-    top:10%;
-    left:10%;
+.equal {
+    position: relative;
+    top: 10%;
+    left: 10%;
     grid-column: span 3;
     width: 80%;
     height: 80%;
+}
+
+.middle {
+    display: flex;
+    gap:2px;
+}
+
+.clear {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    font-size: 1.5rem;
+    height: 100%;
+    background-color: hsla(42, 77%, 53%, 1);
+    border: 2px solid black;
+    border-radius: 5px;
+}
+
+.delete {
+    font-size: 2.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: 100%;
+    background-color: hsla(42, 77%, 53%, 1);
+    border: 2px solid black;
+    border-radius: 5px;
 }
