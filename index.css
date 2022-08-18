@@ -1,6 +1,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -40,4 +41,58 @@ main{
 .lower{
     background-color: aliceblue;
     height: 60%;
+    display: flex;
+   }
+
+.nbutton{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 80px;
+    border-radius: 5px;
+    border: 2px solid black;
+    background-color: grey;
+}
+
+.numbers-container{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    row-gap: 10px;
+    column-gap: 5px;
+    padding: 10px;
+    width: 60%;
+}
+
+.operands-container{
+    display: grid;
+    box-sizing: border-box;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 5px;
+    width:40%;
+    height: 100%;
+    padding: 10px;
+    background-color: brown;
+}
+
+.operands{
+    height: 100%;
+    width: 100%px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: orange;
+    border: 2px solid black;
+}
+
+.equal{
+    position:relative;
+    top:10%;
+    left:10%;
+    grid-column: span 3;
+    width: 80%;
+    height: 80%;
 }
