@@ -22,104 +22,193 @@ const lastValue = document.querySelector(".lastValue");
 
 let myExpression = [];
 let myOperand = [];
-let expLength;
+let currentResult;
+let invalid = false;
+let currentExp = 0;
+let currentOp = -1;
 
 num1.addEventListener("click", () => {
   display.textContent += 1;
+  if (!myExpression[currentExp]) {
+    myExpression.push(1);
+  } else {
+    myExpression[currentExp] += "1";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num2.addEventListener("click", () => {
   display.textContent += 2;
+  if (!myExpression[currentExp]) {
+    myExpression.push(2);
+  } else {
+    myExpression[currentExp] += "2";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num3.addEventListener("click", () => {
   display.textContent += 3;
+  if (!myExpression[currentExp]) {
+    myExpression.push(3);
+  } else {
+    myExpression[currentExp] += "3";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num4.addEventListener("click", () => {
   display.textContent += 4;
+  if (!myExpression[currentExp]) {
+    myExpression.push(4);
+  } else {
+    myExpression[currentExp] += "4";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num5.addEventListener("click", () => {
   display.textContent += 5;
+  if (!myExpression[currentExp]) {
+    myExpression.push(5);
+  } else {
+    myExpression[currentExp] += "5";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num6.addEventListener("click", () => {
   display.textContent += 6;
+  if (!myExpression[currentExp]) {
+    myExpression.push(6);
+  } else {
+    myExpression[currentExp] += "6";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num7.addEventListener("click", () => {
   display.textContent += 7;
+  if (!myExpression[currentExp]) {
+    myExpression.push(7);
+  } else {
+    myExpression[currentExp] += "7";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num8.addEventListener("click", () => {
   display.textContent += 8;
+  if (!myExpression[currentExp]) {
+    myExpression.push(8);
+  } else {
+    myExpression[currentExp] += "8";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 num9.addEventListener("click", () => {
   display.textContent += 9;
+  if (!myExpression[currentExp]) {
+    myExpression.push(9);
+  } else {
+    myExpression[currentExp] += "9";
+  }
   warning.textContent = "";
+  invalid = false;
+  operate();
+  lastValue.textContent = currentResult;
 });
+
 sAdd.addEventListener("click", () => {
   checkLast();
   display.textContent += "+";
   checkFirst();
-  if(checkFirst === false){
-    myExpression.push()
+  if ((invalid === false)) {
+    myOperand.push("+");
+    currentExp += 1;
+    currentOp += 1;
+  } else {
+    myOperand.pop();
+    myOperand.push("+");
   }
+  console.log(myExpression);
+  console.log(myOperand);
 });
+
 sSub.addEventListener("click", () => {
   checkLast();
   display.textContent += "-";
   checkFirst();
 });
+
 sDiv.addEventListener("click", () => {
   checkLast();
   display.textContent += "/";
   checkFirst();
 });
+
 sMult.addEventListener("click", () => {
   checkLast();
   display.textContent += "×";
   checkFirst();
 });
+
 sComma.addEventListener("click", () => {
   checkLast();
   display.textContent += ".";
   checkFirst();
 });
+
 sPercent.addEventListener("click", () => {
   checkLast();
   display.textContent += "%";
   checkFirst();
 });
+
 sEqual.addEventListener("click", () => {
   myExpression = display.textContent;
 });
+
 del.addEventListener("click", () => {
   display.textContent = display.textContent.substring(
     0,
     display.textContent.length - 1
   );
 });
+
 clearDisplay.addEventListener("click", clearD);
 
 function clearD() {
   display.textContent = "";
 }
 
-function test() {
-  console.log(myExpression[2]);
-}
-
-function separator() {
-  display.textContent;
-}
-
 function checkLast() {
   let lastChar = display.textContent.length - 1;
-  console.log(display.textContent[lastChar]);
-
   if (
     display.textContent[lastChar] === "+" ||
     display.textContent[lastChar] === "-" ||
@@ -130,6 +219,7 @@ function checkLast() {
   ) {
     display.textContent = display.textContent.substring(0, lastChar);
     warning.textContent = "Invalid input. Operation missing a value.";
+    invalid = true;
   }
 }
 
@@ -144,6 +234,33 @@ function checkFirst() {
   ) {
     display.textContent = "";
     warning.textContent = "First character can't be an operand.";
-    return true;
+    invalid = true;
   }
+}
+
+function operate() {
+  if (myOperand[1]) {
+    currentResult = myExpression.reduce((a, b) => {
+      if (b === myExpression[0]) {
+        a = b;
+        return a;
+      }
+      if (myOperand[currentOp] === "+") {
+        return a + b;
+      }
+      if (myOperand[currentOp] === "-") {
+        return a - b;
+      }
+      if (myOperand[currentOp] === "×") {
+        return a * b;
+      }
+      if (myOperand[currentOp] === "/") {
+        return a / b;
+      }
+      if (myOperand[currentOp] === "%") {
+        return (a / 100) * b;
+      }
+    }, 0);
+  }
+  return currentResult;
 }
