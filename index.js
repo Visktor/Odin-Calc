@@ -17,72 +17,83 @@ const sMult = document.querySelector(".multiply");
 const sComma = document.querySelector(".comma");
 const sPercent = document.querySelector(".percentage");
 const sEqual = document.querySelector(".equal");
+const warning = document.querySelector(".warning");
+const lastValue = document.querySelector(".lastValue");
 
-clearDisplay.addEventListener("click", clearD);
-let myExpression = display.textContent;
+let myExpression = [];
+let myOperand = [];
+let expLength;
 
 num1.addEventListener("click", () => {
   display.textContent += 1;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num2.addEventListener("click", () => {
   display.textContent += 2;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num3.addEventListener("click", () => {
   display.textContent += 3;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num4.addEventListener("click", () => {
   display.textContent += 4;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num5.addEventListener("click", () => {
   display.textContent += 5;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num6.addEventListener("click", () => {
   display.textContent += 6;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num7.addEventListener("click", () => {
   display.textContent += 7;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num8.addEventListener("click", () => {
   display.textContent += 8;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 num9.addEventListener("click", () => {
   display.textContent += 9;
-  myExpression = display.textContent;
+  warning.textContent = "";
 });
 sAdd.addEventListener("click", () => {
+  checkLast();
   display.textContent += "+";
-  myExpression = display.textContent;
+  checkFirst();
+  if(checkFirst === false){
+    myExpression.push()
+  }
 });
 sSub.addEventListener("click", () => {
+  checkLast();
   display.textContent += "-";
-  myExpression = display.textContent;
+  checkFirst();
 });
 sDiv.addEventListener("click", () => {
-  display.textContent += "÷";
-  myExpression = display.textContent;
+  checkLast();
+  display.textContent += "/";
+  checkFirst();
 });
 sMult.addEventListener("click", () => {
+  checkLast();
   display.textContent += "×";
-  myExpression = display.textContent;
+  checkFirst();
 });
 sComma.addEventListener("click", () => {
+  checkLast();
   display.textContent += ".";
-  myExpression = display.textContent;
+  checkFirst();
 });
 sPercent.addEventListener("click", () => {
+  checkLast();
   display.textContent += "%";
-  myExpression = display.textContent;
+  checkFirst();
 });
 sEqual.addEventListener("click", () => {
-  display.textContent = operate();
   myExpression = display.textContent;
 });
 del.addEventListener("click", () => {
@@ -90,14 +101,49 @@ del.addEventListener("click", () => {
     0,
     display.textContent.length - 1
   );
-  myExpression = display.textContent;
 });
+clearDisplay.addEventListener("click", clearD);
 
 function clearD() {
   display.textContent = "";
-  myExpression = display.textContent;
 }
 
-function test(){
-    console.log(myExpression);
+function test() {
+  console.log(myExpression[2]);
+}
+
+function separator() {
+  display.textContent;
+}
+
+function checkLast() {
+  let lastChar = display.textContent.length - 1;
+  console.log(display.textContent[lastChar]);
+
+  if (
+    display.textContent[lastChar] === "+" ||
+    display.textContent[lastChar] === "-" ||
+    display.textContent[lastChar] === "/" ||
+    display.textContent[lastChar] === "×" ||
+    display.textContent[lastChar] === "." ||
+    display.textContent[lastChar] === "%"
+  ) {
+    display.textContent = display.textContent.substring(0, lastChar);
+    warning.textContent = "Invalid input. Operation missing a value.";
+  }
+}
+
+function checkFirst() {
+  if (
+    display.textContent[0] === "+" ||
+    display.textContent[0] === "-" ||
+    display.textContent[0] === "/" ||
+    display.textContent[0] === "×" ||
+    display.textContent[0] === "." ||
+    display.textContent[0] === "%"
+  ) {
+    display.textContent = "";
+    warning.textContent = "First character can't be an operand.";
+    return true;
+  }
 }
