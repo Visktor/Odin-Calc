@@ -30,7 +30,7 @@ let currentOp = -1;
 num1.addEventListener("click", () => {
   display.textContent += 1;
   if (!myExpression[currentExp]) {
-    myExpression.push(1);
+    myExpression.push("1");
   } else {
     myExpression[currentExp] += "1";
   }
@@ -43,7 +43,7 @@ num1.addEventListener("click", () => {
 num2.addEventListener("click", () => {
   display.textContent += 2;
   if (!myExpression[currentExp]) {
-    myExpression.push(2);
+    myExpression.push("2");
   } else {
     myExpression[currentExp] += "2";
   }
@@ -56,7 +56,7 @@ num2.addEventListener("click", () => {
 num3.addEventListener("click", () => {
   display.textContent += 3;
   if (!myExpression[currentExp]) {
-    myExpression.push(3);
+    myExpression.push("3");
   } else {
     myExpression[currentExp] += "3";
   }
@@ -69,7 +69,7 @@ num3.addEventListener("click", () => {
 num4.addEventListener("click", () => {
   display.textContent += 4;
   if (!myExpression[currentExp]) {
-    myExpression.push(4);
+    myExpression.push("4");
   } else {
     myExpression[currentExp] += "4";
   }
@@ -82,7 +82,7 @@ num4.addEventListener("click", () => {
 num5.addEventListener("click", () => {
   display.textContent += 5;
   if (!myExpression[currentExp]) {
-    myExpression.push(5);
+    myExpression.push("5");
   } else {
     myExpression[currentExp] += "5";
   }
@@ -95,7 +95,7 @@ num5.addEventListener("click", () => {
 num6.addEventListener("click", () => {
   display.textContent += 6;
   if (!myExpression[currentExp]) {
-    myExpression.push(6);
+    myExpression.push("6");
   } else {
     myExpression[currentExp] += "6";
   }
@@ -108,7 +108,7 @@ num6.addEventListener("click", () => {
 num7.addEventListener("click", () => {
   display.textContent += 7;
   if (!myExpression[currentExp]) {
-    myExpression.push(7);
+    myExpression.push("7");
   } else {
     myExpression[currentExp] += "7";
   }
@@ -121,7 +121,7 @@ num7.addEventListener("click", () => {
 num8.addEventListener("click", () => {
   display.textContent += 8;
   if (!myExpression[currentExp]) {
-    myExpression.push(8);
+    myExpression.push("8");
   } else {
     myExpression[currentExp] += "8";
   }
@@ -134,7 +134,7 @@ num8.addEventListener("click", () => {
 num9.addEventListener("click", () => {
   display.textContent += 9;
   if (!myExpression[currentExp]) {
-    myExpression.push(9);
+    myExpression.push("9");
   } else {
     myExpression[currentExp] += "9";
   }
@@ -148,34 +148,53 @@ sAdd.addEventListener("click", () => {
   checkLast();
   display.textContent += "+";
   checkFirst();
-  if ((invalid === false)) {
+  if (invalid === false) {
     myOperand.push("+");
     currentExp += 1;
-    currentOp += 1;
   } else {
     myOperand.pop();
     myOperand.push("+");
   }
-  console.log(myExpression);
-  console.log(myOperand);
 });
 
 sSub.addEventListener("click", () => {
   checkLast();
   display.textContent += "-";
   checkFirst();
+  if (invalid === false) {
+    myOperand.push("-");
+    currentExp += 1;
+    console.log(currentExp);
+  } else {
+    myOperand.pop();
+    myOperand.push("-");
+  }
 });
 
 sDiv.addEventListener("click", () => {
   checkLast();
   display.textContent += "/";
   checkFirst();
+  if (invalid === false) {
+    myOperand.push("/");
+    currentExp += 1;
+  } else {
+    myOperand.pop();
+    myOperand.push("/");
+  }
 });
 
 sMult.addEventListener("click", () => {
   checkLast();
   display.textContent += "×";
   checkFirst();
+  if (invalid === false) {
+    myOperand.push("×");
+    currentExp += 1;
+  } else {
+    myOperand.pop();
+    myOperand.push("×");
+  }
 });
 
 sComma.addEventListener("click", () => {
@@ -188,6 +207,13 @@ sPercent.addEventListener("click", () => {
   checkLast();
   display.textContent += "%";
   checkFirst();
+  if (invalid === false) {
+    myOperand.push("%");
+    currentExp += 1;
+  } else {
+    myOperand.pop();
+    myOperand.push("%");
+  }
 });
 
 sEqual.addEventListener("click", () => {
@@ -205,6 +231,12 @@ clearDisplay.addEventListener("click", clearD);
 
 function clearD() {
   display.textContent = "";
+  lastValue.textContent = undefined;
+  myExpression = [];
+  myOperand = [];
+  currentExp = 0;
+  currentOp = -1;
+  currentResult = undefined;
 }
 
 function checkLast() {
@@ -239,28 +271,32 @@ function checkFirst() {
 }
 
 function operate() {
-  if (myOperand[1]) {
+  currentOp = 0;
+  if (myOperand[0]) {
     currentResult = myExpression.reduce((a, b) => {
       if (b === myExpression[0]) {
-        a = b;
-        return a;
-      }
-      if (myOperand[currentOp] === "+") {
-        return a + b;
-      }
-      if (myOperand[currentOp] === "-") {
-        return a - b;
-      }
-      if (myOperand[currentOp] === "×") {
-        return a * b;
-      }
-      if (myOperand[currentOp] === "/") {
-        return a / b;
-      }
-      if (myOperand[currentOp] === "%") {
-        return (a / 100) * b;
+        return a + Number(b);
+      } else {
+        currentOp += 1;
+        if (myOperand[currentOp] === "+") {
+          return Number(a) + Number(b);
+        }
+        if (myOperand[currentOp] === "-") {
+          console.log(a);
+          console.log(b);
+          return Number(a) - Number(b);
+        }
+        if (myOperand[currentOp] === "×") {
+          return Number(a) * Number(b);
+        }
+        if (myOperand[currentOp] === "/") {
+          return Number(a) / Number(b);
+        }
+        if (myOperand[currentOp] === "%") {
+          return (Number(a) / 100) * Number(b);
+        }
       }
     }, 0);
   }
-  return currentResult;
+  lastValue.textContent = currentResult;
 }
