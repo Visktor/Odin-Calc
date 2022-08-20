@@ -271,7 +271,7 @@ function checkFirst() {
 }
 
 function operate() {
-  currentOp = 0;
+  currentOp = -1;
   if (myOperand[0]) {
     currentResult = myExpression.reduce((a, b) => {
       if (b === myExpression[0]) {
@@ -282,8 +282,6 @@ function operate() {
           return Number(a) + Number(b);
         }
         if (myOperand[currentOp] === "-") {
-          console.log(a);
-          console.log(b);
           return Number(a) - Number(b);
         }
         if (myOperand[currentOp] === "×") {
