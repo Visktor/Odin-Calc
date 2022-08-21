@@ -1,15 +1,9 @@
 const clearDisplay = document.querySelector(".clear");
 const del = document.querySelector(".delete");
 const display = document.querySelector(".displaycontent");
-const num1 = document.querySelector(".number1");
-const num2 = document.querySelector(".number2");
-const num3 = document.querySelector(".number3");
-const num4 = document.querySelector(".number4");
-const num5 = document.querySelector(".number5");
-const num6 = document.querySelector(".number6");
-const num7 = document.querySelector(".number7");
-const num8 = document.querySelector(".number8");
-const num9 = document.querySelector(".number9");
+const numbContainer = document.querySelectorAll(
+  ".numbers-container > .nbutton"
+);
 const sAdd = document.querySelector(".add");
 const sSub = document.querySelector(".subtract");
 const sDiv = document.querySelector(".divide");
@@ -27,121 +21,19 @@ let invalid = false;
 let currentExp = 0;
 let currentOp = -1;
 
-num1.addEventListener("click", () => {
-  display.textContent += 1;
-  if (!myExpression[currentExp]) {
-    myExpression.push("1");
-  } else {
-    myExpression[currentExp] += "1";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num2.addEventListener("click", () => {
-  display.textContent += 2;
-  if (!myExpression[currentExp]) {
-    myExpression.push("2");
-  } else {
-    myExpression[currentExp] += "2";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num3.addEventListener("click", () => {
-  display.textContent += 3;
-  if (!myExpression[currentExp]) {
-    myExpression.push("3");
-  } else {
-    myExpression[currentExp] += "3";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num4.addEventListener("click", () => {
-  display.textContent += 4;
-  if (!myExpression[currentExp]) {
-    myExpression.push("4");
-  } else {
-    myExpression[currentExp] += "4";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num5.addEventListener("click", () => {
-  display.textContent += 5;
-  if (!myExpression[currentExp]) {
-    myExpression.push("5");
-  } else {
-    myExpression[currentExp] += "5";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num6.addEventListener("click", () => {
-  display.textContent += 6;
-  if (!myExpression[currentExp]) {
-    myExpression.push("6");
-  } else {
-    myExpression[currentExp] += "6";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num7.addEventListener("click", () => {
-  display.textContent += 7;
-  if (!myExpression[currentExp]) {
-    myExpression.push("7");
-  } else {
-    myExpression[currentExp] += "7";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num8.addEventListener("click", () => {
-  display.textContent += 8;
-  if (!myExpression[currentExp]) {
-    myExpression.push("8");
-  } else {
-    myExpression[currentExp] += "8";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
-});
-
-num9.addEventListener("click", () => {
-  display.textContent += 9;
-  if (!myExpression[currentExp]) {
-    myExpression.push("9");
-  } else {
-    myExpression[currentExp] += "9";
-  }
-  warning.textContent = "";
-  invalid = false;
-  operate();
-  lastValue.textContent = currentResult;
+numbContainer.forEach((num) => {
+  num.addEventListener("click", function clickNumber() {
+    display.textContent += num.textContent; //this is still passed in as string.
+    if (!myExpression[currentExp]) {
+      myExpression.push(num.textContent);
+    } else {
+      myExpression[currentExp] += num.textContent;
+    }
+    warning.textContent = "";
+    invalid = false;
+    operate();
+    lastValue.textContent = currentResult;
+  });
 });
 
 sAdd.addEventListener("click", () => {
@@ -279,6 +171,7 @@ function operate() {
         return a + Number(b); /* the first number of the array must 
       always be added to 0, otherwise we would break our expression */
       } else {
+        console.log(currentOp)
         currentOp += 1;
         if (myOperand[currentOp] === "+") {
           return Number(a) + Number(b);
