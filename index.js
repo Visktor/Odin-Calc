@@ -227,7 +227,6 @@ sEqual.addEventListener("click", () => {
 });
 
 del.addEventListener("click", fDel);
-
 clearDisplay.addEventListener("click", clearD);
 
 function clearD() {
@@ -274,9 +273,11 @@ function checkFirst() {
 function operate() {
   currentOp = -1;
   if (myExpression[1]) {
+    // there are at least two values to operate
     currentResult = myExpression.reduce((a, b) => {
       if (b === myExpression[0]) {
-        return a + Number(b);
+        return a + Number(b); /* the first number of the array must 
+      always be added to 0, otherwise we would break our expression */
       } else {
         currentOp += 1;
         if (myOperand[currentOp] === "+") {
@@ -296,9 +297,12 @@ function operate() {
         }
       }
     }, 0);
+    lastValue.textContent = currentResult;
+  } else {
+    lastValue.textContent = "";
   }
-  lastValue.textContent = currentResult;
 }
+
 function fDel() {
   let erased = display.textContent.slice(display.textContent.length - 1);
   // erased is assigned the character that is to be removed.
@@ -309,6 +313,9 @@ function fDel() {
     if (nItem.length > 1) {
       // element contains more than one character:
       myExpression.push(nItem.substring(0, nItem.length - 1));
+      operate();
+    } else {
+      operate();
     } /* pushes back the string we extracted (without it's last character)
     into the last array Index. Note we don't need an else statement 'cause
     if we don't execute this action, the element will just be removed 
@@ -317,6 +324,7 @@ function fDel() {
     //if it's not a number just remove last myOperand element.
     myOperand.pop();
     currentExp -= 1;
+    operate();
   }
   //this part is just removing the character from the display string.
   display.textContent = display.textContent.substring(
