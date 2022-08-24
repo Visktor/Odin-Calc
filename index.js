@@ -45,7 +45,7 @@ numbContainer.forEach((num) => {
 
 sAdd.addEventListener("click", () => {
   checkLast();
-  display.textContent += "+";
+  display.textContent += " + ";
   checkFirst();
   if (invalid === false) {
     myOperand.push("+");
@@ -56,14 +56,19 @@ sAdd.addEventListener("click", () => {
   }
 });
 
+/* Depending whether we have valid or invalid input, we'll either just
+  push our operand into the array or replace the last array element.
+  This pattern will repeat itself throughout all of our click events
+  since we don't want to give the user the ability to break our 
+  expression */
+
 sSub.addEventListener("click", () => {
   checkLast();
-  display.textContent += "-";
+  display.textContent += " - ";
   checkFirst();
   if (invalid === false) {
     myOperand.push("-");
     currentExp += 1;
-    console.log(currentExp);
   } else {
     myOperand.pop();
     myOperand.push("-");
@@ -72,7 +77,7 @@ sSub.addEventListener("click", () => {
 
 sDiv.addEventListener("click", () => {
   checkLast();
-  display.textContent += "/";
+  display.textContent += " / ";
   checkFirst();
   if (invalid === false) {
     myOperand.push("/");
@@ -85,7 +90,7 @@ sDiv.addEventListener("click", () => {
 
 sMult.addEventListener("click", () => {
   checkLast();
-  display.textContent += "×";
+  display.textContent += " × ";
   checkFirst();
   if (invalid === false) {
     myOperand.push("×");
@@ -136,32 +141,34 @@ function clearD() {
   currentExp = 0;
   currentOp = -1;
   currentResult = undefined;
+  warning.textContent = "";
 }
 
 function checkLast() {
-  let lastChar = display.textContent.length - 1;
+  let lastCharIndex = display.textContent.length - 1;
   if (
-    display.textContent[lastChar] === "+" ||
-    display.textContent[lastChar] === "-" ||
-    display.textContent[lastChar] === "/" ||
-    display.textContent[lastChar] === "×" ||
-    display.textContent[lastChar] === "." ||
-    display.textContent[lastChar] === "%"
+    display.textContent[lastCharIndex] != undefined &&
+    display.textContent[lastCharIndex].match(/[^.0-9]/)
   ) {
-    display.textContent = display.textContent.substring(0, lastChar);
-    warning.textContent = "Invalid input. Operation missing a value.";
+    display.textContent = display.textContent.substring(0, lastCharIndex - 2);
+    warning.textContent = "Insert a numeric value to continue";
     invalid = true;
+  }
+  if (display.textContent[lastCharIndex] === ".") {
+    display.textContent = display.textContent.substring(0, lastCharIndex);
+    warning.textContent = "Can't compute empty decimal values";
+    myExpression[currentExp] = myExpression[currentExp].substring(
+      0,
+      myExpression[currentExp].length - 1
+    ); /* This is necessary because we don't want the user to just
+    add a dot at the end of a number without a decimal number afterwards */
   }
 }
 
 function checkFirst() {
   if (
-    display.textContent[0] === "+" ||
-    display.textContent[0] === "-" ||
-    display.textContent[0] === "/" ||
-    display.textContent[0] === "×" ||
-    display.textContent[0] === "." ||
-    display.textContent[0] === "%"
+    display.textContent != undefined &&
+    display.textContent[0].match(/[^.0-9]/)
   ) {
     display.textContent = "";
     warning.textContent = "First character can't be an operand.";
@@ -223,30 +230,41 @@ function operate() {
 
 function fDel() {
   let erased = display.textContent.slice(display.textContent.length - 1);
-  // erased is assigned the character that is to be removed.
-  if (erased.match(/[0-9]/)) {
-    //it's a number then:
+  // erased is assigned the character that is to be removed
+  if (erased.match(/[.0-9]/)) {
     let nItem = myExpression.pop();
-    //gets the last element of myExpression array.
     if (nItem.length > 1) {
-      // element contains more than one character:
       myExpression.push(nItem.substring(0, nItem.length - 1));
+      /* pushes back the string we extracted (without it's last character)
+    into the last array Index */
+      display.textContent = display.textContent.substring(
+        0,
+        display.textContent.length - 1
+      );
       operate();
     } else {
+      /* if it's the only character on current myExpression element, we
+      don't push it back, removing the element itself. Otherwise, we'd
+      be creating an empty element, which might cause problems */
       operate();
-    } /* pushes back the string we extracted (without it's last character)
-    into the last array Index. Note we don't need an else statement 'cause
-    if we don't execute this action, the element will just be removed 
-    for good. */
+      display.textContent = display.textContent.substring(
+        0,
+        display.textContent.length - 1
+      );
+    }
   } else {
-    //if it's not a number just remove last myOperand element.
+    //if it's not a number or dot then it's obviously an operand
+    //we need to remove the last operand and go back one Expression index
     myOperand.pop();
     currentExp -= 1;
     operate();
-  }
-  //this part is just removing the character from the display string.
   display.textContent = display.textContent.substring(
     0,
-    display.textContent.length - 1
+      display.textContent.length - 3
   );
+  }
+  /* this part is just removing the character from the display string, 
+  which must be done unconditionally */
+
+  console.log(myExpression);
 }
