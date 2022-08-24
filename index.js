@@ -51,6 +51,7 @@ sAdd.addEventListener("click", () => {
     myOperand.push("+");
     currentExp += 1;
   } else {
+    console.log("OOPS");
     myOperand.pop();
     myOperand.push("+");
   }
@@ -70,6 +71,7 @@ sSub.addEventListener("click", () => {
     myOperand.push("-");
     currentExp += 1;
   } else {
+    console.log("OOPS");
     myOperand.pop();
     myOperand.push("-");
   }
@@ -83,6 +85,7 @@ sDiv.addEventListener("click", () => {
     myOperand.push("/");
     currentExp += 1;
   } else {
+    console.log("OOPS");
     myOperand.pop();
     myOperand.push("/");
   }
@@ -96,6 +99,7 @@ sMult.addEventListener("click", () => {
     myOperand.push("×");
     currentExp += 1;
   } else {
+    console.log("OOPS");
     myOperand.pop();
     myOperand.push("×");
   }
@@ -110,7 +114,7 @@ sDot.addEventListener("click", () => {
     display.textContent += "0.";
     myExpression.push("0.");
   } else if (display.textContent[display.textContent.length - 1] != ".") {
-  display.textContent += ".";
+    display.textContent += ".";
     myExpression[currentExp] += ".";
   } else if (display.textContent[display.textContent.length - 1] === ".") {
     warning.textContent = "Must add decimal value to continue";
@@ -125,6 +129,7 @@ sPercent.addEventListener("click", () => {
     myOperand.push("%");
     currentExp += 1;
   } else {
+    console.log("OOPS");
     myOperand.pop();
     myOperand.push("%");
   }
@@ -206,17 +211,20 @@ function checkDecimal() {
 }
 
 function operate() {
-  // This function updates the final result and shows it on screen.
-  currentOp = -1;
+  // This function updates the final result and shows it on screen
+  currentOp = -2;
   if (myExpression[1]) {
     // there are at least two values to operate
     currentResult = myExpression.reduce((a, b) => {
-      if (b === myExpression[0]) {
-        return a + Number(b); /* the first number of the array must 
-      always be added to 0, disregarding any operator beside it.
-      Otherwise, we would break our expression */
+      if (currentOp === -2) {
+        currentOp += 1;
+        return a + Number(b);
+        /* the first number of the array must 
+      always be added to 0, disregarding any operator beside it
+      otherwise we would break our expression */
       } else {
         currentOp += 1;
+        console.table(a, myOperand[currentOp], b);
         if (myOperand[currentOp] === "+") {
           return Number(a) + Number(b);
         }
@@ -234,6 +242,7 @@ function operate() {
         }
       }
     }, 0);
+    currentResult = Math.trunc(currentResult * 10) / 10; // At most one floating point
     lastValue.textContent = currentResult;
   } else {
     lastValue.textContent = "";
@@ -243,7 +252,7 @@ function operate() {
 function fDel() {
   let erased = display.textContent.slice(display.textContent.length - 1);
   // erased is assigned the character that is to be removed
-  if (erased.match(/[.0-9]/)) {
+  if (erased.match(/[\.0-9]/)) {
     let nItem = myExpression.pop();
     if (nItem.length > 1) {
       myExpression.push(nItem.substring(0, nItem.length - 1));
@@ -270,13 +279,11 @@ function fDel() {
     myOperand.pop();
     currentExp -= 1;
     operate();
-  display.textContent = display.textContent.substring(
-    0,
+    display.textContent = display.textContent.substring(
+      0,
       display.textContent.length - 3
-  );
+    );
   }
   /* this part is just removing the character from the display string, 
   which must be done unconditionally */
-
-  console.log(myExpression);
 }
