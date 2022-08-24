@@ -18,21 +18,28 @@ let myExpression = [];
 let myOperand = [];
 let currentResult;
 let invalid = false;
+/* The invalid variable tells us when the user's done something wrong.
+ For further clarity on the invalid state, see checkFirst() and
+ checkLast() functions */
 let currentExp = 0;
 let currentOp = -1;
+//These two are simply Index counters for our two arrays
 
 numbContainer.forEach((num) => {
   num.addEventListener("click", function clickNumber() {
-    display.textContent += num.textContent; //this is still passed in as string.
+    //loop over all numbers and add click events
+    invalid = false;
+    warning.textContent = "";
     if (!myExpression[currentExp]) {
       myExpression.push(num.textContent);
+      display.textContent += num.textContent;
+      //We make an array element, in case it doesn't exist
     } else {
+      checkDecimal();
       myExpression[currentExp] += num.textContent;
+      display.textContent += num.textContent;
     }
-    warning.textContent = "";
-    invalid = false;
     operate();
-    lastValue.textContent = currentResult;
   });
 });
 
@@ -159,6 +166,24 @@ function checkFirst() {
     display.textContent = "";
     warning.textContent = "First character can't be an operand.";
     invalid = true;
+  }
+}
+
+function checkDecimal() {
+  if (
+    // check if the user is trying to input more than 1 decimal point
+    myExpression[currentExp].includes(".") &&
+    myExpression[currentExp].length > 2
+  ) {
+    let dotIndex = myExpression[currentExp].indexOf(".");
+    console.log(dotIndex);
+    let decimalNumbers = myExpression[currentExp].slice(dotIndex);
+    console.log(decimalNumbers);
+    if (decimalNumbers.length > 1) {
+      fDel();
+      warning.textContent = "Only possible to compute one decimal point";
+    } //if they are, delete the last character
+    console.log(myExpression);
   }
 }
 
