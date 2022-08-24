@@ -46,7 +46,6 @@ numbContainer.forEach((num) => {
 sAdd.addEventListener("click", () => {
   checkLast();
   display.textContent += " + ";
-  checkFirst();
   if (invalid === false) {
     myOperand.push("+");
     currentExp += 1;
@@ -55,6 +54,7 @@ sAdd.addEventListener("click", () => {
     myOperand.pop();
     myOperand.push("+");
   }
+  checkFirst();
 });
 
 /* Depending whether we have valid or invalid input, we'll either just
@@ -66,7 +66,6 @@ sAdd.addEventListener("click", () => {
 sSub.addEventListener("click", () => {
   checkLast();
   display.textContent += " - ";
-  checkFirst();
   if (invalid === false) {
     myOperand.push("-");
     currentExp += 1;
@@ -75,12 +74,12 @@ sSub.addEventListener("click", () => {
     myOperand.pop();
     myOperand.push("-");
   }
+  checkFirst();
 });
 
 sDiv.addEventListener("click", () => {
   checkLast();
   display.textContent += " / ";
-  checkFirst();
   if (invalid === false) {
     myOperand.push("/");
     currentExp += 1;
@@ -89,12 +88,12 @@ sDiv.addEventListener("click", () => {
     myOperand.pop();
     myOperand.push("/");
   }
+  checkFirst();
 });
 
 sMult.addEventListener("click", () => {
   checkLast();
   display.textContent += " × ";
-  checkFirst();
   if (invalid === false) {
     myOperand.push("×");
     currentExp += 1;
@@ -103,12 +102,27 @@ sMult.addEventListener("click", () => {
     myOperand.pop();
     myOperand.push("×");
   }
+  checkFirst();
+});
+
+sPercent.addEventListener("click", () => {
+  checkLast();
+  display.textContent += " % ";
+  if (invalid === false) {
+    myOperand.push("%");
+    currentExp += 1;
+  } else {
+    console.log("OOPS");
+    myOperand.pop();
+    myOperand.push("%");
+  }
+  checkFirst();
 });
 
 sDot.addEventListener("click", () => {
   if (
     display.textContent[display.textContent.length - 1] === undefined ||
-    display.textContent[display.textContent.length - 1].match(/[^.0-9]/)
+    display.textContent[display.textContent.length - 1].match(/[^\.0-9]/)
   ) {
     //if the last character was not a number or there's no last character.
     display.textContent += "0.";
@@ -116,22 +130,9 @@ sDot.addEventListener("click", () => {
   } else if (display.textContent[display.textContent.length - 1] != ".") {
     display.textContent += ".";
     myExpression[currentExp] += ".";
+    checkDecimal();
   } else if (display.textContent[display.textContent.length - 1] === ".") {
     warning.textContent = "Must add decimal value to continue";
-  }
-});
-
-sPercent.addEventListener("click", () => {
-  checkLast();
-  display.textContent += " % ";
-  checkFirst();
-  if (invalid === false) {
-    myOperand.push("%");
-    currentExp += 1;
-  } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("%");
   }
 });
 
@@ -191,7 +192,7 @@ function checkFirst() {
   ) {
     display.textContent = "";
     warning.textContent = "First character can't be an operand.";
-    invalid = true;
+    myOperand.pop();
   }
 }
 
@@ -206,7 +207,7 @@ function checkDecimal() {
     if (decimalNumbers.length > 1) {
       fDel();
       warning.textContent = "Only possible to compute one decimal point";
-    } //if they are, delete the last character
+    }
   }
 }
 
