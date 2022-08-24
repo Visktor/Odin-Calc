@@ -131,13 +131,17 @@ sPercent.addEventListener("click", () => {
 });
 
 sEqual.addEventListener("click", () => {
-  display.textContent = lastValue.textContent;
-  lastValue.textContent = "";
-  myExpression = [display.textContent];
-  myOperand = [];
-  currentExp = 0;
-  currentOp = -1;
-  currentResult = undefined;
+  if (display.textContent[display.textContent.length - 1].match(/[0-9]/)) {
+    display.textContent = lastValue.textContent;
+    lastValue.textContent = "";
+    myExpression = [display.textContent];
+    myOperand = [];
+    currentExp = 0;
+    currentOp = -1;
+    currentResult = undefined;
+  } else {
+    warning.textContent = "Error. last value can't be an operand.";
+  }
 });
 
 del.addEventListener("click", fDel);
