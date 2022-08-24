@@ -8,7 +8,7 @@ const sAdd = document.querySelector(".add");
 const sSub = document.querySelector(".subtract");
 const sDiv = document.querySelector(".divide");
 const sMult = document.querySelector(".multiply");
-const sComma = document.querySelector(".comma");
+const sDot = document.querySelector(".comma");
 const sPercent = document.querySelector(".percentage");
 const sEqual = document.querySelector(".equal");
 const warning = document.querySelector(".warning");
@@ -101,15 +101,25 @@ sMult.addEventListener("click", () => {
   }
 });
 
-sComma.addEventListener("click", () => {
-  checkLast();
+sDot.addEventListener("click", () => {
+  if (
+    display.textContent[display.textContent.length - 1] === undefined ||
+    display.textContent[display.textContent.length - 1].match(/[^.0-9]/)
+  ) {
+    //if the last character was not a number or there's no last character.
+    display.textContent += "0.";
+    myExpression.push("0.");
+  } else if (display.textContent[display.textContent.length - 1] != ".") {
   display.textContent += ".";
-  checkFirst();
+    myExpression[currentExp] += ".";
+  } else if (display.textContent[display.textContent.length - 1] === ".") {
+    warning.textContent = "Must add decimal value to continue";
+  }
 });
 
 sPercent.addEventListener("click", () => {
   checkLast();
-  display.textContent += "%";
+  display.textContent += " % ";
   checkFirst();
   if (invalid === false) {
     myOperand.push("%");
@@ -195,15 +205,16 @@ function checkDecimal() {
 }
 
 function operate() {
+  // This function updates the final result and shows it on screen.
   currentOp = -1;
   if (myExpression[1]) {
     // there are at least two values to operate
     currentResult = myExpression.reduce((a, b) => {
       if (b === myExpression[0]) {
         return a + Number(b); /* the first number of the array must 
-      always be added to 0, otherwise we would break our expression */
+      always be added to 0, disregarding any operator beside it.
+      Otherwise, we would break our expression */
       } else {
-        console.log(currentOp)
         currentOp += 1;
         if (myOperand[currentOp] === "+") {
           return Number(a) + Number(b);
@@ -214,7 +225,7 @@ function operate() {
         if (myOperand[currentOp] === "×") {
           return Number(a) * Number(b);
         }
-        if (myOperand[currentOp] === "/") {
+        if (myOperand[currentOp] === "/" && Number(b) != 0) {
           return Number(a) / Number(b);
         }
         if (myOperand[currentOp] === "%") {
