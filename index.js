@@ -162,7 +162,7 @@ function checkLast() {
   let lastCharIndex = display.textContent.length - 1;
   if (
     display.textContent[lastCharIndex] != undefined &&
-    display.textContent[lastCharIndex].match(/[^.0-9]/)
+    display.textContent[lastCharIndex].match(/[^\.0-9]/)
   ) {
     display.textContent = display.textContent.substring(0, lastCharIndex - 2);
     warning.textContent = "Insert a numeric value to continue";
@@ -182,7 +182,7 @@ function checkLast() {
 function checkFirst() {
   if (
     display.textContent != undefined &&
-    display.textContent[0].match(/[^.0-9]/)
+    display.textContent[0].match(/[^\.0-9]/)
   ) {
     display.textContent = "";
     warning.textContent = "First character can't be an operand.";
@@ -197,14 +197,11 @@ function checkDecimal() {
     myExpression[currentExp].length > 2
   ) {
     let dotIndex = myExpression[currentExp].indexOf(".");
-    console.log(dotIndex);
     let decimalNumbers = myExpression[currentExp].slice(dotIndex);
-    console.log(decimalNumbers);
     if (decimalNumbers.length > 1) {
       fDel();
       warning.textContent = "Only possible to compute one decimal point";
     } //if they are, delete the last character
-    console.log(myExpression);
   }
 }
 
