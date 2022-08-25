@@ -31,7 +31,6 @@ main {
 
 .upper {
     height: 20%;
-    background-color: brown;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -39,6 +38,9 @@ main {
     padding-left: 10%;
     font-size: 1.5rem;
     gap: 5px;
+    border: 2px solid darkred; 
+    color: white;
+    font-size: 1rem;
 }
 
 .middle {
@@ -58,7 +60,7 @@ main {
     height: 100%;
     width: 80px;
     border-radius: 35px;
-    border: 2px solid white;
+    border: 2px solid darkred;
     background-color: #000;
     color: white;
     font-size: 1.3rem;
@@ -97,7 +99,7 @@ main {
     justify-content: center;
     align-items: center;
     background-color: #000;
-    border: 3px solid yellow;
+    border: 3px solid black;
     cursor: pointer;
     color:white;
 }
@@ -172,4 +174,8 @@ main {
 
 .symbols-container *:hover {
     cursor: pointer;
+}
+
+.equal{
+    border-color: green;
 }
