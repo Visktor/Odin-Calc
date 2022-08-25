@@ -251,40 +251,42 @@ function operate() {
 }
 
 function fDel() {
-  let erased = display.textContent.slice(display.textContent.length - 1);
-  // erased is assigned the character that is to be removed
-  if (erased.match(/[\.0-9]/)) {
-    let nItem = myExpression.pop();
-    if (nItem.length > 1) {
-      myExpression.push(nItem.substring(0, nItem.length - 1));
-      /* pushes back the string we extracted (without it's last character)
+  if (display.textContent) {
+    let erased = display.textContent.slice(display.textContent.length - 1);
+    // erased is assigned the character that is to be removed
+    if (erased.match(/[\.0-9]/)) {
+      let nItem = myExpression.pop();
+      if (nItem.length > 1) {
+        myExpression.push(nItem.substring(0, nItem.length - 1));
+        /* pushes back the string we extracted (without it's last character)
     into the last array Index */
-      display.textContent = display.textContent.substring(
-        0,
-        display.textContent.length - 1
-      );
-      operate();
-    } else {
-      /* if it's the only character on current myExpression element, we
+        display.textContent = display.textContent.substring(
+          0,
+          display.textContent.length - 1
+        );
+        operate();
+      } else {
+        /* if it's the only character on current myExpression element, we
       don't push it back, removing the element itself. Otherwise, we'd
       be creating an empty element, which might cause problems */
+        operate();
+        display.textContent = display.textContent.substring(
+          0,
+          display.textContent.length - 1
+        );
+      }
+    } else {
+      //if it's not a number or dot then it's obviously an operand
+      //we need to remove the last operand and go back one Expression index
+      myOperand.pop();
+      currentExp -= 1;
       operate();
       display.textContent = display.textContent.substring(
         0,
-        display.textContent.length - 1
+        display.textContent.length - 3
       );
     }
-  } else {
-    //if it's not a number or dot then it's obviously an operand
-    //we need to remove the last operand and go back one Expression index
-    myOperand.pop();
-    currentExp -= 1;
-    operate();
-    display.textContent = display.textContent.substring(
-      0,
-      display.textContent.length - 3
-    );
-  }
-  /* this part is just removing the character from the display string, 
+    /* this part is just removing the character from the display string, 
   which must be done unconditionally */
+  }
 }
