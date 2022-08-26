@@ -25,6 +25,22 @@ let currentExp = 0;
 let currentOp = -1;
 //These two are simply Index counters for our two arrays
 
+window.addEventListener("keydown", (e) => {
+  if (e.key.match(/^\d$/)) {
+    invalid = false;
+    warning.textContent = "";
+    if (!myExpression[currentExp]) {
+      myExpression.push(e.key);
+      display.textContent += e.key;
+    } else {
+      checkDecimal();
+      myExpression[currentExp] += e.key;
+      display.textContent += e.key;
+    }
+    operate();
+  }
+});
+
 numbContainer.forEach((num) => {
   num.addEventListener("click", function clickNumber() {
     //loop over all numbers and add click events
@@ -43,7 +59,7 @@ numbContainer.forEach((num) => {
   });
 });
 
-sAdd.addEventListener("click", () => {
+sAdd.addEventListener("click", function add(){
   checkLast();
   display.textContent += " + ";
   if (invalid === false) {
@@ -63,7 +79,7 @@ sAdd.addEventListener("click", () => {
   since we don't want to give the user the ability to break our 
   expression */
 
-sSub.addEventListener("click", () => {
+sSub.addEventListener("click", function sub(){
   checkLast();
   display.textContent += " - ";
   if (invalid === false) {
@@ -77,7 +93,7 @@ sSub.addEventListener("click", () => {
   checkFirst();
 });
 
-sDiv.addEventListener("click", () => {
+sDiv.addEventListener("click", function div(){
   checkLast();
   display.textContent += " / ";
   if (invalid === false) {
@@ -91,7 +107,7 @@ sDiv.addEventListener("click", () => {
   checkFirst();
 });
 
-sMult.addEventListener("click", () => {
+sMult.addEventListener("click", function mult(){
   checkLast();
   display.textContent += " × ";
   if (invalid === false) {
@@ -105,7 +121,7 @@ sMult.addEventListener("click", () => {
   checkFirst();
 });
 
-sPercent.addEventListener("click", () => {
+sPercent.addEventListener("click", function percent(){
   checkLast();
   display.textContent += " % ";
   if (invalid === false) {
@@ -119,7 +135,7 @@ sPercent.addEventListener("click", () => {
   checkFirst();
 });
 
-sDot.addEventListener("click", () => {
+sDot.addEventListener("click", function dot(){
   if (
     display.textContent[display.textContent.length - 1] === undefined ||
     display.textContent[display.textContent.length - 1].match(/[^\.0-9]/)
