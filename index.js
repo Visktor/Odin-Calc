@@ -25,22 +25,6 @@ let currentExp = 0;
 let currentOp = -1;
 //These two are simply Index counters for our two arrays
 
-window.addEventListener("keydown", (e) => {
-  if (e.key.match(/^\d$/)) {
-    invalid = false;
-    warning.textContent = "";
-    if (!myExpression[currentExp]) {
-      myExpression.push(e.key);
-      display.textContent += e.key;
-    } else {
-      checkDecimal();
-      myExpression[currentExp] += e.key;
-      display.textContent += e.key;
-    }
-    operate();
-  }
-});
-
 numbContainer.forEach((num) => {
   num.addEventListener("click", function clickNumber() {
     //loop over all numbers and add click events
@@ -59,83 +43,44 @@ numbContainer.forEach((num) => {
   });
 });
 
-sAdd.addEventListener("click", function add(){
-  checkLast();
-  display.textContent += " + ";
-  if (invalid === false) {
-    myOperand.push("+");
-    currentExp += 1;
-  } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("+");
+window.addEventListener("keydown", (e) => {
+  if (e.key.match(/^\d$/)) {
+    invalid = false;
+    warning.textContent = "";
+    if (!myExpression[currentExp]) {
+      myExpression.push(e.key);
+      display.textContent += e.key;
+    } else {
+      checkDecimal();
+      myExpression[currentExp] += e.key;
+      display.textContent += e.key;
+    }
+    operate();
   }
-  checkFirst();
+  if (e.key === "+") {
+    addNum();
+  }
+  if (e.key === "-") {
+    subNum();
+  }
+  if (e.key === "/") {
+    divNum();
+  }
+  if (e.key === "*") {
+    multNum();
+  }
+  if (e.key === "%") {
+    percent();
+  }
 });
 
-/* Depending whether we have valid or invalid input, we'll either just
-  push our operand into the array or replace the last array element.
-  This pattern will repeat itself throughout all of our click events
-  since we don't want to give the user the ability to break our 
-  expression */
+sSub.addEventListener("click", subNum);
+sAdd.addEventListener("click", addNum);
+sDiv.addEventListener("click", divNum);
+sMult.addEventListener("click", multNum);
+sPercent.addEventListener("click", percent);
 
-sSub.addEventListener("click", function sub(){
-  checkLast();
-  display.textContent += " - ";
-  if (invalid === false) {
-    myOperand.push("-");
-    currentExp += 1;
-  } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("-");
-  }
-  checkFirst();
-});
-
-sDiv.addEventListener("click", function div(){
-  checkLast();
-  display.textContent += " / ";
-  if (invalid === false) {
-    myOperand.push("/");
-    currentExp += 1;
-  } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("/");
-  }
-  checkFirst();
-});
-
-sMult.addEventListener("click", function mult(){
-  checkLast();
-  display.textContent += " × ";
-  if (invalid === false) {
-    myOperand.push("×");
-    currentExp += 1;
-  } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("×");
-  }
-  checkFirst();
-});
-
-sPercent.addEventListener("click", function percent(){
-  checkLast();
-  display.textContent += " % ";
-  if (invalid === false) {
-    myOperand.push("%");
-    currentExp += 1;
-  } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("%");
-  }
-  checkFirst();
-});
-
-sDot.addEventListener("click", function dot(){
+sDot.addEventListener("click", function dot() {
   if (
     display.textContent[display.textContent.length - 1] === undefined ||
     display.textContent[display.textContent.length - 1].match(/[^\.0-9]/)
@@ -305,4 +250,80 @@ function fDel() {
     /* this part is just removing the character from the display string, 
   which must be done unconditionally */
   }
+}
+
+/* Depending whether we have valid or invalid input, we'll either just
+  push our operand into the array or replace the last array element.
+  This pattern will repeat itself throughout all of our operand functions
+  since we don't want to give the user the ability to break our 
+  expression */
+
+function addNum() {
+  checkLast();
+  display.textContent += " + ";
+  if (invalid === false) {
+    myOperand.push("+");
+    currentExp += 1;
+  } else {
+    console.log("OOPS");
+    myOperand.pop();
+    myOperand.push("+");
+  }
+  checkFirst();
+}
+
+function subNum() {
+  checkLast();
+  display.textContent += " - ";
+  if (invalid === false) {
+    myOperand.push("-");
+    currentExp += 1;
+  } else {
+    console.log("OOPS");
+    myOperand.pop();
+    myOperand.push("-");
+  }
+  checkFirst();
+}
+
+function divNum() {
+  checkLast();
+  display.textContent += " / ";
+  if (invalid === false) {
+    myOperand.push("/");
+    currentExp += 1;
+  } else {
+    console.log("OOPS");
+    myOperand.pop();
+    myOperand.push("/");
+  }
+  checkFirst();
+}
+
+function multNum() {
+  checkLast();
+  display.textContent += " × ";
+  if (invalid === false) {
+    myOperand.push("×");
+    currentExp += 1;
+  } else {
+    console.log("OOPS");
+    myOperand.pop();
+    myOperand.push("×");
+  }
+  checkFirst();
+}
+
+function percent() {
+  checkLast();
+  display.textContent += " % ";
+  if (invalid === false) {
+    myOperand.push("%");
+    currentExp += 1;
+  } else {
+    console.log("OOPS");
+    myOperand.pop();
+    myOperand.push("%");
+  }
+  checkFirst();
 }
