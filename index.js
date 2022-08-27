@@ -18,30 +18,12 @@ let myExpression = [];
 let myOperand = [];
 let currentResult;
 let invalid = false;
+let currentExp = 0;
+let currentOp = -1;
 /* The invalid variable tells us when the user's done something wrong.
  For further clarity on the invalid state, see checkFirst() and
  checkLast() functions */
-let currentExp = 0;
-let currentOp = -1;
-//These two are simply Index counters for our two arrays
-
-numbContainer.forEach((num) => {
-  num.addEventListener("click", function clickNumber() {
-    //loop over all numbers and add click events
-    invalid = false;
-    warning.textContent = "";
-    if (!myExpression[currentExp]) {
-      myExpression.push(num.textContent);
-      display.textContent += num.textContent;
-      //We make an array element, in case it doesn't exist
-    } else {
-      checkDecimal();
-      myExpression[currentExp] += num.textContent;
-      display.textContent += num.textContent;
-    }
-    operate();
-  });
-});
+//CurrentExp and CurrentOp are simply Index counters for our two arrays
 
 window.addEventListener("keydown", (e) => {
   console.log(e);
@@ -87,6 +69,9 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
+numbContainer.forEach((num) => {
+  num.addEventListener("click", clickNumber);
+});
 sSub.addEventListener("click", subNum);
 sAdd.addEventListener("click", addNum);
 sDiv.addEventListener("click", divNum);
@@ -96,6 +81,22 @@ sDot.addEventListener("click", dot);
 sEqual.addEventListener("click", equals);
 del.addEventListener("click", fDel);
 clearDisplay.addEventListener("click", clearD);
+
+function clickNumber() {
+  //loop over all numbers and add click events
+  invalid = false;
+  warning.textContent = "";
+  if (!myExpression[currentExp]) {
+    myExpression.push(this.textContent);
+    display.textContent += this.textContent;
+    //We make an array element, in case it doesn't exist
+  } else {
+    checkDecimal();
+    myExpression[currentExp] += this.textContent;
+    display.textContent += this.textContent;
+  }
+  operate();
+}
 
 function clearD() {
   display.textContent = "";
@@ -196,7 +197,9 @@ function operate() {
 
 function fDel() {
   if (display.textContent) {
-    if (display.textContent.slice(this.length - 1).match(/[\.0-9]/)) {
+    if (
+      display.textContent.slice(display.textContent.length - 1).match(/[\.0-9]/)
+    ) {
       let nItem = myExpression.pop();
       if (nItem.length > 1) {
         myExpression.push(nItem.substring(0, nItem.length - 1));
@@ -234,86 +237,139 @@ function fDel() {
   expression */
 
 function addNum() {
-  checkLast();
-  display.textContent += " + ";
-  if (invalid === false) {
-    myOperand.push("+");
-    currentExp += 1;
+  if (
+    !(
+      (myExpression[currentExp] === "0" || myExpression[currentExp] === "0.") &&
+      myOperand[currentOp] === "/"
+    )
+  ) {
+    checkLast();
+    display.textContent += " + ";
+    if (invalid === false) {
+      myOperand.push("+");
+      currentExp += 1;
+    } else {
+      console.log("OOPS");
+      myOperand.pop();
+      myOperand.push("+");
+    }
+    checkFirst();
   } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("+");
+    warning.textContent = "Can't Divide by 0";
   }
-  checkFirst();
 }
 
 function subNum() {
-  checkLast();
-  display.textContent += " - ";
-  if (invalid === false) {
-    myOperand.push("-");
-    currentExp += 1;
+  if (
+    !(
+      (myExpression[currentExp] === "0" || myExpression[currentExp] === "0.") &&
+      myOperand[currentOp] === "/"
+    )
+  ) {
+    checkLast();
+    display.textContent += " - ";
+    if (invalid === false) {
+      myOperand.push("-");
+      currentExp += 1;
+    } else {
+      console.log("OOPS");
+      myOperand.pop();
+      myOperand.push("-");
+    }
+    checkFirst();
   } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("-");
+    warning.textContent = "Can't Divide by 0";
   }
-  checkFirst();
 }
 
 function divNum() {
-  checkLast();
-  display.textContent += " / ";
-  if (invalid === false) {
-    myOperand.push("/");
-    currentExp += 1;
+  if (
+    !(
+      (myExpression[currentExp] === "0" || myExpression[currentExp] === "0.") &&
+      myOperand[currentOp] === "/"
+    )
+  ) {
+    checkLast();
+    display.textContent += " / ";
+    if (invalid === false) {
+      myOperand.push("/");
+      currentExp += 1;
+    } else {
+      console.log("OOPS");
+      myOperand.pop();
+      myOperand.push("/");
+    }
+    checkFirst();
   } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("/");
+    warning.textContent = "Can't Divide by 0";
   }
-  checkFirst();
 }
-
 function multNum() {
-  checkLast();
-  display.textContent += " × ";
-  if (invalid === false) {
-    myOperand.push("×");
-    currentExp += 1;
+  if (
+    !(
+      (myExpression[currentExp] === "0" || myExpression[currentExp] === "0.") &&
+      myOperand[currentOp] === "/"
+    )
+  ) {
+    checkLast();
+    display.textContent += " × ";
+    if (invalid === false) {
+      myOperand.push("×");
+      currentExp += 1;
+    } else {
+      console.log("OOPS");
+      myOperand.pop();
+      myOperand.push("×");
+    }
+    checkFirst();
   } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("×");
+    warning.textContent = "Can't Divide by 0";
   }
-  checkFirst();
 }
 
 function percent() {
-  checkLast();
-  display.textContent += " % ";
-  if (invalid === false) {
-    myOperand.push("%");
-    currentExp += 1;
+  if (
+    !(
+      (myExpression[currentExp] === "0" || myExpression[currentExp] === "0.") &&
+      myOperand[currentOp] === "/"
+    )
+  ) {
+    checkLast();
+    display.textContent += " % ";
+    if (invalid === false) {
+      myOperand.push("%");
+      currentExp += 1;
+    } else {
+      console.log("OOPS");
+      myOperand.pop();
+      myOperand.push("%");
+    }
+    checkFirst();
   } else {
-    console.log("OOPS");
-    myOperand.pop();
-    myOperand.push("%");
+    warning.textContent = "Can't Divide by 0";
   }
-  checkFirst();
 }
 
 function equals() {
-  if (display.textContent[display.textContent.length - 1].match(/[0-9]/)) {
-    display.textContent = lastValue.textContent;
-    lastValue.textContent = "";
-    myExpression = [display.textContent];
-    myOperand = [];
-    currentExp = 0;
-    currentOp = -1;
-    currentResult = undefined;
+  if (
+    !(
+      (myExpression[currentExp] === "0" || myExpression[currentExp] === "0.") &&
+      myOperand[currentOp] === "/"
+    )
+  ) {
+    if (display.textContent[display.textContent.length - 1].match(/[0-9]/)) {
+      display.textContent = lastValue.textContent;
+      lastValue.textContent = "";
+      myExpression = [display.textContent];
+      myOperand = [];
+      currentExp = 0;
+      currentOp = -1;
+      currentResult = undefined;
+    } else {
+      warning.textContent = "Error. last value can't be an operand.";
+    }
   } else {
-    warning.textContent = "Error. last value can't be an operand.";
+    warning.textContent = "Can't Divide by 0";
   }
 }
 
