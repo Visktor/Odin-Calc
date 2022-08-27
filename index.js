@@ -44,6 +44,7 @@ numbContainer.forEach((num) => {
 });
 
 window.addEventListener("keydown", (e) => {
+  console.log(e);
   if (e.key.match(/^\d$/)) {
     invalid = false;
     warning.textContent = "";
@@ -72,6 +73,18 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "%") {
     percent();
   }
+  if (e.key === "Backspace") {
+    fDel();
+  }
+  if (e.key === ".") {
+    dot();
+  }
+  if (e.key === "=") {
+    equals();
+  }
+  if (e.key === "Enter") {
+    equals();
+  }
 });
 
 sSub.addEventListener("click", subNum);
@@ -79,38 +92,8 @@ sAdd.addEventListener("click", addNum);
 sDiv.addEventListener("click", divNum);
 sMult.addEventListener("click", multNum);
 sPercent.addEventListener("click", percent);
-
-sDot.addEventListener("click", function dot() {
-  if (
-    display.textContent[display.textContent.length - 1] === undefined ||
-    display.textContent[display.textContent.length - 1].match(/[^\.0-9]/)
-  ) {
-    //if the last character was not a number or there's no last character.
-    display.textContent += "0.";
-    myExpression.push("0.");
-  } else if (display.textContent[display.textContent.length - 1] != ".") {
-    display.textContent += ".";
-    myExpression[currentExp] += ".";
-    checkDecimal();
-  } else if (display.textContent[display.textContent.length - 1] === ".") {
-    warning.textContent = "Must add decimal value to continue";
-  }
-});
-
-sEqual.addEventListener("click", () => {
-  if (display.textContent[display.textContent.length - 1].match(/[0-9]/)) {
-    display.textContent = lastValue.textContent;
-    lastValue.textContent = "";
-    myExpression = [display.textContent];
-    myOperand = [];
-    currentExp = 0;
-    currentOp = -1;
-    currentResult = undefined;
-  } else {
-    warning.textContent = "Error. last value can't be an operand.";
-  }
-});
-
+sDot.addEventListener("click", dot);
+sEqual.addEventListener("click", equals);
 del.addEventListener("click", fDel);
 clearDisplay.addEventListener("click", clearD);
 
@@ -213,14 +196,10 @@ function operate() {
 
 function fDel() {
   if (display.textContent) {
-    let erased = display.textContent.slice(display.textContent.length - 1);
-    // erased is assigned the character that is to be removed
-    if (erased.match(/[\.0-9]/)) {
+    if (display.textContent.slice(this.length - 1).match(/[\.0-9]/)) {
       let nItem = myExpression.pop();
       if (nItem.length > 1) {
         myExpression.push(nItem.substring(0, nItem.length - 1));
-        /* pushes back the string we extracted (without it's last character)
-    into the last array Index */
         display.textContent = display.textContent.substring(
           0,
           display.textContent.length - 1
@@ -237,8 +216,6 @@ function fDel() {
         );
       }
     } else {
-      //if it's not a number or dot then it's obviously an operand
-      //we need to remove the last operand and go back one Expression index
       myOperand.pop();
       currentExp -= 1;
       operate();
@@ -247,8 +224,6 @@ function fDel() {
         display.textContent.length - 3
       );
     }
-    /* this part is just removing the character from the display string, 
-  which must be done unconditionally */
   }
 }
 
@@ -326,4 +301,35 @@ function percent() {
     myOperand.push("%");
   }
   checkFirst();
+}
+
+function equals() {
+  if (display.textContent[display.textContent.length - 1].match(/[0-9]/)) {
+    display.textContent = lastValue.textContent;
+    lastValue.textContent = "";
+    myExpression = [display.textContent];
+    myOperand = [];
+    currentExp = 0;
+    currentOp = -1;
+    currentResult = undefined;
+  } else {
+    warning.textContent = "Error. last value can't be an operand.";
+  }
+}
+
+function dot() {
+  if (
+    display.textContent[display.textContent.length - 1] === undefined ||
+    display.textContent[display.textContent.length - 1].match(/[^\.0-9]/)
+  ) {
+    //if the last character was not a number or there's no last character.
+    display.textContent += "0.";
+    myExpression.push("0.");
+  } else if (display.textContent[display.textContent.length - 1] != ".") {
+    display.textContent += ".";
+    myExpression[currentExp] += ".";
+    checkDecimal();
+  } else if (display.textContent[display.textContent.length - 1] === ".") {
+    warning.textContent = "Must add decimal value to continue";
+  }
 }
